@@ -1,24 +1,24 @@
 <template>
 	<div class="f-header">
-		<span>
-			<el-icon>
+		<span class="logo">
+			<el-icon class="mr-1">
 				<Document />
 			</el-icon>
 			编程学习
 		</span>
-		<el-icon>
+		<el-icon class="icon-btn">
 			<Tickets />
 		</el-icon>
-		<el-icon>
+		<el-icon class="icon-btn">
 			<Refresh />
 		</el-icon>
-		<div class="ml-auto">
-			<el-icon>
+		<div class="ml-auto flex justify-center items-center">
+			<el-icon class="icon-btn">
 				<FullScreen />
 			</el-icon>
-			<el-dropdown>
-				<span class="el-dropdown-link">
-					<el-avatar :size="25" :src="$store.state.user.avatar" />
+			<el-dropdown class="dropdown">
+				<span class="flex  items-center text-light-50">
+					<el-avatar class="mr-2" :size="25" :src="$store.state.user.avatar" />
 					{{ $store.state.user.username }}
 					<el-icon class="el-icon--right">
 						<arrow-down />
@@ -37,7 +37,29 @@
 
 <style>
 .f-header {
-	@apply flex items-center bg-indigo-500 text-light-50 fixed top-0 left-0 right-0;
+	@apply flex items-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0;
 	height: 64px;
+}
+
+.logo {
+	width: 250px;
+	@apply flex justify-center items-center text-xl font-thin;
+}
+
+.icon-btn {
+	@apply flex justify-center items-center;
+	width: 42px;
+	height: 64px;
+	cursor: pointer;
+}
+
+.icon-btn:hover {
+	@apply bg-indigo-600;
+}
+
+.f-header .dropdown {
+	height: 64px;
+	cursor: pointer;
+	@apply flex justify-center items-center mx-5;
 }
 </style>

@@ -15,3 +15,8 @@ export function getInfo() {
 export function logout() {
 	return instance.post("/admin/logout")
 }
+
+// 修改密码
+export function updatepassword(data) {
+	return instance.post("/admin/updatepassword", data)
+}
