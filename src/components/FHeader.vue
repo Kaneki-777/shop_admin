@@ -9,14 +9,27 @@
 		<el-icon class="icon-btn">
 			<Tickets />
 		</el-icon>
-		<el-icon class="icon-btn">
-			<Refresh />
-		</el-icon>
-		<div class="ml-auto flex justify-center items-center">
-			<el-icon class="icon-btn">
-				<FullScreen />
+
+		<el-tooltip
+								effect="dark"
+								content="刷新"
+								placement="bottom">
+			<el-icon class="icon-btn" @click="handleRefresh">
+				<Refresh />
 			</el-icon>
-			<el-dropdown class="dropdown">
+		</el-tooltip>
+		<div class="ml-auto flex justify-center items-center">
+			<el-tooltip
+									effect="dark"
+									content="全屏"
+									placement="bottom">
+				<el-icon class="icon-btn" @click="toggle">
+					<FullScreen v-if="!isFullscreen" />
+					<Aim v-else />
+				</el-icon>
+			</el-tooltip>
+
+			<el-dropdown class="dropdown" @command="handleCommand">
 				<span class="flex  items-center text-light-50">
 					<el-avatar class="mr-2" :size="25" :src="$store.state.user.avatar" />
 					{{ $store.state.user.username }}
@@ -26,15 +39,58 @@
 				</span>
 				<template #dropdown>
 					<el-dropdown-menu>
-						<el-dropdown-item>修改密码</el-dropdown-item>
-						<el-dropdown-item>退出登录</el-dropdown-item>
+						<el-dropdown-item command="repassword">修改密码</el-dropdown-item>
+						<el-dropdown-item command="loginOut">退出登录</el-dropdown-item>
 					</el-dropdown-menu>
 				</template>
 			</el-dropdown>
 		</div>
 	</div>
 </template>
+<script setup>
+import { logout } from '@/api/manager'
+import { showModal, toast } from '@/composables/utils'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { useFullscreen } from '@vueuse/core'
 
+const {
+	//是否全屏状态
+	isFullscreen,
+	// 切换全屏
+	toggle
+} = useFullscreen()
+
+const router = useRouter()
+const store = useStore()
+
+const handleCommand = (e) => {
+	switch (e) {
+		case 'repassword':
+			console.log('repassword');
+			break;
+		case 'loginOut':
+			loginOut()
+			break;
+	}
+}
+const loginOut = () => {
+	showModal('是否退出登录?').then(res => {
+		logout().finally(() => {
+			store.dispatch("loginOut")
+			// 跳转回登录页
+			router.push('/login')
+			// 提示退出登录成功
+			toast("退出登录成功")
+		})
+	})
+}
+
+const handleRefresh = () => location.reload()
+
+
+
+</script>
 <style>
 .f-header {
 	@apply flex items-center bg-indigo-700 text-light-50 fixed top-0 left-0 right-0;
