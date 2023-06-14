@@ -47,10 +47,7 @@
 		</div>
 	</div>
 
-	<form-drawer ref="formDrawerRef">123
-		<div class="bg-red-500" style="height:2000px;"></div>
-	</form-drawer>>
-	<!-- <el-drawer v-model="showDrawer" title="修改密码" size="45%" :close-on-click-modal="false">
+	<form-drawer ref="formDrawerRef" title="修改密码" destroyOnClose @submit="onSubmit">
 		<el-form ref="formRef" :rules="rules" :model="form" label-width="80px" size="small">
 			<el-form-item prop="oldpassword" label="旧密码">
 				<el-input type="password" v-model="form.oldpassword" placeholder="请输入旧密码">
@@ -64,11 +61,8 @@
 				<el-input type="password" v-model="form.repassword" placeholder="请确认密码">
 				</el-input>
 			</el-form-item>
-			<el-form-item>
-				<el-button type="primary" :loading="loading" @click="onSubmit">提 交</el-button>
-			</el-form-item>
 		</el-form>
-	</el-drawer> -->
+	</form-drawer>>
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
@@ -127,17 +121,17 @@ const handleRefresh = () => location.reload()
 
 const formRef = ref(null)
 
-const loading = ref(false)
+
 const onSubmit = () => {
 	formRef.value.validate((valid) => {
 		if (!valid) return;
-		loading.value = true
+		formDrawerRef.value.showLoading()
 		updatepassword(form).then(res => {
 			toast('修改密码成功，请重新登录')
 			store.dispatch("loginOut")
 			router.push('/login')
 		}).finally(() => {
-			loading.value = false
+			formDrawerRef.value.hideLoading()
 		})
 	})
 }

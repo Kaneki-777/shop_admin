@@ -1,13 +1,17 @@
 <template >
 	<div>
-		<el-drawer v-model="showDrawer" title="修改密码" size="45%" :close-on-click-modal="false">
+		<el-drawer v-model="showDrawer"
+							 :title="title"
+							 :size="size"
+							 :close-on-click-modal="false"
+							 :destroy-on-close="destroyOnClose">
 			<div class="formDrawer">
 				<div class="body">
 					<slot></slot>
 
 				</div>
 				<div class="actions">
-					<el-button type="primary">提 交</el-button>
+					<el-button type="primary" @click="submit" :loading="loading">{{ confirmText }}</el-button>
 					<el-button type="default" @click="close">取 消</el-button>
 				</div>
 			</div>
@@ -20,6 +24,25 @@
 import { ref, reactive } from 'vue'
 const showDrawer = ref(false)
 
+const props = defineProps({
+	title: String,
+	size: {
+		type: String,
+		default: "45%"
+	},
+	destroyOnClose: {
+		type: Boolean,
+		default: false
+	},
+	confirmText: {
+		type: String,
+		default: "提交"
+	}
+})
+
+const loading = ref(false)
+const showLoading = () => loading.value = true
+const hideLoading = () => loading.value = false
 // 开启
 const open = () => {
 	showDrawer.value = true
@@ -30,10 +53,18 @@ const close = () => {
 	showDrawer.value = false
 }
 
+// 提交
+const emit = defineEmits(['submit'])
+const submit = () => {
+	emit("submit")
+}
+
 // 向父组件暴露
 defineExpose({
 	open,
-	close
+	close,
+	showLoading,
+	hideLoading
 })
 
 </script>
