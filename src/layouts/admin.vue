@@ -18,8 +18,8 @@
 </template>
 
 <script setup>
-import FHeader from '@/components/FHeader.vue';
-import FMenu from '@/components/FMenu.vue';
-import FTagList from '@/components/FTagList.vue';
+import FHeader from '@/layouts/components/FHeader.vue';
+import FMenu from '@/layouts/components/FMenu.vue';
+import FTagList from '@/layouts/components/FTagList.vue';
 
 </script>

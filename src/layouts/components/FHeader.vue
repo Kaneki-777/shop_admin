@@ -46,7 +46,11 @@
 			</el-dropdown>
 		</div>
 	</div>
-	<el-drawer v-model="showDrawer" title="修改密码" size="45%" :close-on-click-modal="false">
+
+	<form-drawer ref="formDrawerRef">123
+		<div class="bg-red-500" style="height:2000px;"></div>
+	</form-drawer>>
+	<!-- <el-drawer v-model="showDrawer" title="修改密码" size="45%" :close-on-click-modal="false">
 		<el-form ref="formRef" :rules="rules" :model="form" label-width="80px" size="small">
 			<el-form-item prop="oldpassword" label="旧密码">
 				<el-input type="password" v-model="form.oldpassword" placeholder="请输入旧密码">
@@ -64,10 +68,11 @@
 				<el-button type="primary" :loading="loading" @click="onSubmit">提 交</el-button>
 			</el-form-item>
 		</el-form>
-	</el-drawer>
+	</el-drawer> -->
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
+import FormDrawer from '@/components/FormDrawer.vue'
 import { logout, updatepassword } from '@/api/manager'
 import { showModal, toast } from '@/composables/utils'
 import { useRouter } from 'vue-router'
@@ -83,7 +88,7 @@ const {
 const router = useRouter()
 const store = useStore()
 // 修改密码
-const showDrawer = ref(false)
+const formDrawerRef = ref(null)
 const form = reactive({
 	oldpassword: '',
 	password: '',
@@ -101,7 +106,7 @@ const handleCommand = (e) => {
 			loginOut()
 			break;
 		case 'repassword':
-			showDrawer.value = true;
+			formDrawerRef.value.open()
 			break;
 	}
 }
